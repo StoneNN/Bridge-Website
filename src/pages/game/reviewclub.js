@@ -1,9 +1,17 @@
-import styles from './reviewclub.css';
 
-export default function() {
-  return (
-    <div className={styles.normal}>
-      <h1>Page reviewclub</h1>
-    </div>
-  );
+import TeamList from'./gameclub';
+import * as gameclub from './gameclub';
+const {TeamData}= gameclub;
+class Clock extends React.Component{
+  render(){
+    return (
+      <div >
+        <TeamList
+           TeamData={TeamData}
+          />
+      </div>
+    );
+
+  }
 }
+export default TeamList

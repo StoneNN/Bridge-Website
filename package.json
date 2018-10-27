@@ -20,8 +20,11 @@
     "umi": "^2.0.0-0",
     "umi-plugin-react": "^1.0.1"
   },
-
   "engines": {
     "node": ">=8.0.0"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "react-router-breadcrumbs-hoc": "^2.1.4"
   }
 }

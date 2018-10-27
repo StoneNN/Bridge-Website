@@ -3,19 +3,24 @@
 //2018-9-4
 
 import React, { Component, Fragment } from 'react';
-import { Layout, Menu, Breadcrumb, Icon, Input } from 'antd';
+import { Layout,Row,Col, Button ,Dropdown,Menu} from 'antd';
+import { connect } from 'dva';
 import GlobalHeader from '../component/GlobalHeader';
-import GlobalFooter from '../component/GlobalFooter';
+import BasicFooter from '../component/BasicFooter'
 import GlobalSider from '../component/GlobalSider';
 import router from 'umi/router';
 import logo from '../assets/57130611.jpg';
 import * as routes from '../common/routes';
-
-const Search = Input.Search;
 const { Header, Content, Footer, Sider } = Layout;
 const { headerRoutes } = routes;
+import styles from './BasicLayout.css'
+import { Link } from 'dva/router';
 
 //面包屑
+
+
+
+
 
 
 class BasicLayout extends Component {
@@ -24,6 +29,10 @@ class BasicLayout extends Component {
     if (pathname === '/') {
       router.push('/home');
     }
+  }
+  logout = ()=> {console.log(123)
+    this.props.dispatch({type:'user/logout'})
+    router.push('/user/login')
   }
   render() {
 
@@ -36,34 +45,47 @@ class BasicLayout extends Component {
       }
     }
     const siderRoute = siderData();
+    const loginButton =<div><Link to='/user/login'><Button type='normal'>立即登录</Button></Link><Link to='/user/register'><Button type='primary'>免费注册</Button></Link></div> 
+    const {currentUser} = this.props.user;
+    const menu = (
+      <Menu>
+        <Menu.Item>
+          <Link to='user/center'>用户中心</Link>
+        </Menu.Item>
+        <Menu.Item>
+          <div onClick={this.logout}>退出登录</div>
+        </Menu.Item>
+      </Menu>
+    );
+    const userCenter = (<Dropdown overlay={menu} placement="bottomCenter">
+                          <Button>{currentUser}</Button>
+                        </Dropdown>);
+    
     return (
-      <Layout style={{ minWidth: 780 }}>
-        <div style={{ border: 'none' }}>
-          <img style={{ height: '80px', 'float': "left" }} src={logo} />
-          <div>
-            <Search
-              style={{ width: 200, float: 'right', right: 20, top: 20 }}
-              placeholder="input search text"
-              enterButton="搜索"
-              size="large"
-              onSearch={value => console.log(value)}
-            />
-          </div>
+      <div >
+        <div className='g-header'>
+          <div style={{maxWidth:'1200px',margin:'0 auto'}}>
+            <Row type='flex' align='middle'>
+              <Col span={4}>
+                <img style={{width:'200px'}} src={logo} />
+              </Col>
+              <Col offset={1} span={12}>
+                <GlobalHeader
+                  headerRoutes={headerRoutes}
+                  pathname={headerRouter}
+                />
+              </Col>
+              <Col span={3}></Col>
+              <Col span={4}>
+            { currentUser ? userCenter: loginButton} 
+              </Col>
+            </Row>
+          </div> 
         </div>
-        <Header >
-          <GlobalHeader
-            headerRoutes={headerRoutes}
-            pathname={headerRouter}
-          />
-        </Header>
-        <Content style={{ padding: '0 50px' }}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
-          <Layout style={{ padding: '24px 0', background: '#fff' }}>
-            {siderRoute.child.length > 0 ?
+        
+        <Content style={{maxWidth:'1200px',margin:'0 auto'}}>
+          <Layout style={{ background: '#fff' }}>
+            {siderRoute && siderRoute.child.length>0 ?
               <Sider style={{ background: '#fff', minHeight: "71vh" }} >
                 <GlobalSider
                   siderRoute={siderRoute}
@@ -71,44 +93,18 @@ class BasicLayout extends Component {
               </Sider>
               : ''
             }
-            <Content style={{ padding: '0 24px', minHeight: 280 }}>
+            <Content style={{ minHeight: 280 }}>
               {this.props.children}
             </Content>
           </Layout>
         </Content>
-        <Footer style={{ padding: 0 }}>
-          <GlobalFooter
-            links={[
-              {
-                key: 'Pro 首页',
-                title: 'Pro 首页',
-                href: 'http://pro.ant.design',
-                blankTarget: true,
-              },
-              {
-                key: 'github',
-                title: <Icon type="github" />,
-                href: 'https://github.com/ant-design/ant-design-pro',
-                blankTarget: true,
-              },
-              {
-                key: 'Ant Design',
-                title: 'Ant Design',
-                href: 'http://ant.design',
-                blankTarget: true,
-              },
-            ]}
-            copyright={
-              <Fragment>
-                Copyright <Icon type="copyright" /> 2018 蚂蚁金服体验技术部出品
-                </Fragment>
-            }
-          />
-        </Footer>
-      </Layout>
+        <footer className={styles.footer}>
+        <BasicFooter/>
+        </footer>
+      </div>
     )
   }
 }
 
 
-export default BasicLayout;
+export default connect(({user})=>({user}))(BasicLayout);

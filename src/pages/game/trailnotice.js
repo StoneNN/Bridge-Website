@@ -1,9 +1,13 @@
 import styles from './trailnotice.css';
-
+import TeamList from'./index';
+import * as index from './index';
+const {TeamData}= index;
 export default function() {
   return (
     <div className={styles.normal}>
-      <h1>Page trailnotice</h1>
+      <TeamList
+         TeamData={TeamData}
+        />
     </div>
   );
 }

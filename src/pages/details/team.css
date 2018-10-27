@@ -2,3 +2,7 @@
 .normal {
   background: #F27997;
 }
+
+.editable-row{
+  padding-bottom: 10px;
+}

@@ -6,17 +6,25 @@ import { Menu } from 'antd';
 import { Link } from 'dva/router';
 import styles from './index.less';
 
-
+let CURRET='management'
 const GlobalHeader = props => {
 
     const { headerRoutes, pathname } = props;
-    const HeaderMenu = headerRoutes.map(child => {
-        return <Menu.Item key={child.path}> <Link to={child.path}>{child.name}</Link> </Menu.Item>
-    })
+    const HeaderMenu = headerRoutes.map(item => {
+        if(item.authority){
+            console.log("22222222222222222222")
+            if(item.authority===CURRET){
+                return <Menu.Item key={item.path}> <Link to={item.path}>{item.name}</Link> </Menu.Item>
+            }else{
+                return null
+            }
+        }
+        return <Menu.Item key={item.path}> <Link to={item.path}>{item.name}</Link> </Menu.Item>
+    }).filter((item)=>(item));
     return (
         <div className={styles.header}>
             <Menu
-                theme="dark"
+               theme='grey'
                 mode="horizontal"
                 defaultSelectedKeys={[pathname]}
                 style={{ lineHeight: '64px' }}

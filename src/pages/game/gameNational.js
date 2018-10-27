@@ -1,9 +1,17 @@
-import styles from './gameNational.css';
 
-export default function() {
-  return (
-    <div className={styles.normal}>
-      <h1>Page gameNational</h1>
-    </div>
-  );
+import TeamList from'./index';
+import * as index from './index';
+const {TeamData}= index;
+class Clock extends React.Component{
+  render(){
+    return (
+      <div >
+        <TeamList
+           TeamData={TeamData}
+          />
+      </div>
+    );
+
+  }
 }
+export default TeamList
