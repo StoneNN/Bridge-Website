@@ -1,5 +1,5 @@
 import { Component } from "react";
-import { Card,Tabs,Alert,Form, Input, Button, message } from 'antd';
+import { Card,Tabs,Alert,Form, Input, Button, message, Radio } from 'antd';
 import {connect} from 'dva'
 import router from 'umi/router';
 import styles from './login.less';
@@ -11,8 +11,8 @@ const headStyle={
   fontSize: '16px',
   color: 'rgba(0, 0, 0, 0.85)',
   height:"20px"
-}
-
+};
+const RadioGroup = Radio.Group;
 class NormalLoginForm extends React.Component {
   constructor(props){
     super(props);
@@ -22,8 +22,15 @@ class NormalLoginForm extends React.Component {
         accout:['userName','password'],
       },
       activeKey:"mobile",
-      warn:false
+      warn:false,
+      value: 1,
     }
+  }
+  onRadioChange = (e) => {
+    console.log('radio checked', e.target.value);
+    this.setState({
+      value: e.target.value,
+    });
   }
     handleSubmit = (e) => {
       
@@ -104,7 +111,12 @@ class NormalLoginForm extends React.Component {
           </FormItem>
           </Tabs.TabPane>
         </Tabs>
-          
+        <FormItem style={{margin:"0 auto", width:'90%'}}>
+          <RadioGroup onChange={this.onRadioChange} value={this.state.value}>
+            <Radio value={1}>我是棋牌手</Radio>
+            <Radio value={2}>我是主办方</Radio>
+          </RadioGroup>
+        </FormItem>
           
           <FormItem>
             <Button type="primary" htmlType="submit" className={styles.loginButton}>

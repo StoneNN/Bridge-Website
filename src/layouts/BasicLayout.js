@@ -98,6 +98,7 @@ class BasicLayout extends Component {
             </Content>
           </Layout>
         </Content>
+      
         <footer className={styles.footer}>
         <BasicFooter/>
         </footer>
